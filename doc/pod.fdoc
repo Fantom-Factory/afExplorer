@@ -149,7 +149,8 @@ Release Notes [#releaseNotes]
 *****************************
 v0.0.8 [#v0.0.8]
 ================
- - Refreshing a root folder caused a 'NullErr'.
+ - Chg: Uses Reflux v0.0.6 and 'RefluxBuilder'.
+ - Bug: Refreshing a root folder caused a 'NullErr'.
 
 v0.0.6 [#v0.0.6]
 ================

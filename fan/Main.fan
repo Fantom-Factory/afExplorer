@@ -48,7 +48,7 @@ class Main : AbstractMain {
 			moduleTypes.addAll(pluginTypes)
 		}
 		
-		Reflux.start("Explorer", moduleTypes.unique) |Reflux reflux, Window window| {
+		RefluxBuilder(moduleTypes.unique).start |Reflux reflux, Window window| {
 			if (noPanels) {
 				panels := (Panels) reflux.registry.serviceById(Panels#.qname)
 				panels.panelTypes.each { reflux.hidePanel(it) }

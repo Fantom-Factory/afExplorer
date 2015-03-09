@@ -5,7 +5,7 @@ using gfx
 using fwt
 
 ** (View) - 
-** A text editor with syntax highlighting. Borrowed from [fluxtext]`fandoc:/fluxText`.
+** A text editor with syntax highlighting. Borrowed from [fluxtext]`pod:fluxText`.
 class TextEditor : View {
 	@Inject private Registry		registry
 	@Inject private Explorer		explorer
