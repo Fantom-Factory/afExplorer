@@ -119,11 +119,12 @@ internal class ExplorerCmds {
 
 	Command generateMarkdown(File file) {
 		name := file.basename + ".md"
-		return command( "Convert to '${name}'" ) {
+		return command("Convert to '${name}'") {
 			it.onInvoke.add {
-				fandocDoc := fandocParser.parse( file.name, file.in )
-				out := File( file.uri.plusName( name ) ).out
-				fandocDoc.write( MarkdownDocWriter( out ) )
+				doc := fandocParser.parse(file.name, file.in)
+				dst := explorer.uniqueFile(file.uri.plusName(name).toFile)
+				out := dst.out
+				doc.write(MarkdownDocWriter(out))
 				out.flush.close
 			}
 			it.icon = images.get(`fan://afExplorer/res/icons/markdown-x16.png`)
