@@ -106,7 +106,7 @@ class FolderView : View, RefluxEvents, ExplorerEvents {
 		return false
 	}
 	
-	private Void onSelect() {
+	private Void onSelect(Event event) {
 		globalCommands["afExplorer.cmdRenameFile"].update
 		globalCommands["afExplorer.cmdDeleteFile"].update
 		globalCommands["afReflux.cmdCut"].update
@@ -150,8 +150,11 @@ class FolderView : View, RefluxEvents, ExplorerEvents {
 		if (event.index != null) {
 			fileRes := model.fileRes[event.index]
 			event.popup = fileRes.populatePopup(Menu())
-		} else
+		} else {
+			// allow right-clicks to de-select table rows
+			table.selected = Int[,]
 			event.popup = fileResource?.populatePopup(Menu())
+		}
 	}
 
 	private Void onAction(Event event) {
