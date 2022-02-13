@@ -135,23 +135,51 @@ internal class ExplorerImpl : Explorer {
 	}
 
 	override Void paste(File destDir) {
-		// TODO: dialog for copy overwrite options
+		// TODO dialog for copy overwrite options
 		if (cutFile != null) {
+
+			// if we're moving ourself, to ourself - just return!
+			if (cutFile.parent == destDir)
+				return
+			
+			if (destDir.isDir == false)
+				throw IOErr("Can not move to inside a file!")
+				
+			if (destDir.toStr.contains(cutFile.toStr))
+				throw IOErr("Can not move dir to inside itself!")
+			
 			cutFile.moveInto(destDir)
 			cutFile = null
 		}
+
 		if (copiedFile != null) {
-			if (!copiedFile.isDir) {
-				// handle name conflicts when duplicating (copy->paste) files
-				destName := copiedFile.name.toUri
-				destFile := uniqueFile(destDir + destName)
-				copiedFile.copyTo(destFile)
+			if (copiedFile.isDir == false) {
+				if (destDir.isDir == false) {
+					destFile := uniqueFile(destDir)
+					copiedFile.copyTo(destFile)
+				}
 				
-			} else
-				copiedFile.copyInto(destDir)
+				if (destDir.isDir == true) {
+					destFile := uniqueFile(destDir + copiedFile.name.toUri)
+					copiedFile.copyTo(destFile)
+				}
+			}
+			if (copiedFile.isDir == true) {
+				if (destDir.isDir == false) 
+					throw IOErr("Can not copy a dir into a file")
+				
+				if (destDir.isDir == true) {
+					destFile := uniqueFile(destDir.plus(copiedFile.name.toUri, false))
+
+					if (destFile.toStr.contains(copiedFile.toStr))
+						throw IOErr("Can not copy dir to inside itself!")
+					
+					copiedFile.copyTo(destFile)
+				}
+			}
 			
-			// once copied, allow multiple pastes
-//			copiedFile = null
+			// once copied, allow multiple pastes by NOT setting it to null
+			// copiedFile = null
 		}
 		reflux.refresh(reflux.resolve(destDir.uri.toStr))
 	}
@@ -167,6 +195,8 @@ internal class ExplorerImpl : Explorer {
 			else
 				destName = `${file.basename} ($fileIndex).${file.ext}`
 			destFile = destFile.parent + destName
+			if (file.isDir)
+				destFile = destFile.uri.plusSlash.toFile
 		}
 		return destFile
 	}
