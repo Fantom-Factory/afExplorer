@@ -91,7 +91,7 @@ class FandocViewer : HtmlViewer {
 	private Doc loadFrom(Uri uri) {
 		podFile := Env.cur.findPodFile(uri.path[0])
 		// we get a nice 'Pod file not found err' is pod doesn't exist
-		docPod 	:= DocPod(SilentDocEnv(), podFile)
+		docPod 	:= DocPod.load(SilentDocEnv(), podFile)
 		doc 	:= docPod.doc(uri.path[1], false)
 		
 		if (doc == null) {
