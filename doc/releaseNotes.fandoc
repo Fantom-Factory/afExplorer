@@ -1,6 +1,11 @@
 Versions
 ********
 
+v0.1.12
+=======
+ - Chg: Tweaked Fandoc Viewer to maintain compatibility with Fantom 1.0.77.
+ - Bug: Rewrote Copy / Paste Commands to ensure unique file names and to avoid possible infinite recursive directories. *(Yikes!)*
+
 v0.1.10
 =======
  - New: Convert Fandoc -> Markdown option in file context menu (Patch contributed by LightDye).
