@@ -1,7 +1,7 @@
 
 class Main {
-	static Void main() {
-		AppBuilder("afExplorerPlugins") {
+	static Void main(Str[] args) {
+		AppBuilder(args.first) {
 			it.jarFiles  = ["swt.jar"]
 			it.platforms = ["win32-x86_64"]
 		}.build |bob| {
@@ -165,7 +165,9 @@ const class AppBuilder {
 
 		if (copyEtcFiles)
 			podNames.unique.each |pod| {
-				copyFile(findFile(`etc/${pod}/`, false), `etc/${pod}/`)
+				file := (fantomHomeDir + `etc/${pod}/`).normalize as File
+				file  = file.exists ? file : null
+				copyFile(file, `etc/${pod}/`)
 			}
 	}
 	
